@@ -1,0 +1,17 @@
+﻿@model aBlog.Core.ViewModels.PostsViewModel
+
+@using (Html.BeginForm("Search", "Posts"))
+{
+    <div class="well">
+        <h4>Blog Search</h4>
+        <div class="input-group">
+            @Html.TextBoxFor(m => m.SearchTerm, new { @class = "form-control", placeholder = "Search by User, Title or Discription" })
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+        <!-- /.input-group -->
+    </div>
+}

@@ -1,0 +1,7 @@
+packages/
+aBlog/bin/
+aBlog.Test/bin/
+aBlog.DataModel/obj/
+aBlog.DataModel/bin/
+aBlog.Test/obj/
+aBlog/obj/

@@ -1,0 +1,19 @@
+﻿@model IEnumerable<aBlog.DataModel.Models.Comment>
+<!-- Posted Comments -->
+<!-- Comment -->
+
+@foreach (var comment in Model)
+{
+    <div class="media">
+        <a class="pull-left" href="#">
+            <img class="media-object" src="http://placehold.it/64x64" alt="">
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading">
+                @comment.UserName
+                <small>@comment.DateCreated.ToString("dd MMM yyyy") at @comment.DateCreated.ToString("HH:mm:ss")</small>
+            </h4>
+            @comment.Content
+        </div>
+    </div>
+}

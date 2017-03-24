@@ -1,0 +1,103 @@
+﻿@model IEnumerable<aBlog.DataModel.Models.Post>
+
+@{
+    ViewBag.Title = "MyPosts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="posts">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+            @foreach (var post in Model)
+            {
+                <div>
+                    <div class="actions pull-right">
+                        <a href="@Url.Action("Edit", "Posts", new {Id = post.Id})">
+                            Edit
+                        </a> |
+                        <a href="#" class="js-cancel-post" data-post-id="@post.Id">
+                            Cancel
+                        </a>
+                    </div>
+                    <!-- First Blog Post -->
+                    <h2>
+                       @post.Category.Name &rarr; @Html.ActionLink(post.Title, "Detail", "Home", new { id = post.Id }, null)
+                    </h2>
+
+                    <div class="date pull-right">
+                        <div class="month">@post.PostedDateTime.ToString("MMM")</div>
+                        <div class="day">@post.PostedDateTime.ToString("d ")</div>
+                    </div>
+                    <p class="lead">
+                        by @post.User.Name
+                    </p>
+
+
+                    <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+
+                    <p>@post.Description</p>
+
+                    <a class="btn btn-primary" href="@Url.Action("Detail", "Home", new {id = post.Id})">Read More<span class="glyphicon glyphicon-chevron-right"></span></a>
+
+                    <button data-post-id="@post.Id" class="btn btn-default btn-lg pull-right js-toggle-favourite">
+                        <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+                    </button>
+
+                    <hr>
+                </div>
+            }
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            $(".js-cancel-post").click(function(e) {
+                var link = $(e.target);
+
+                bootbox.dialog({
+                    message: "Are you sure you want to delete this post?",
+                    title: "Confirm",
+                    buttons: {
+                        no: {
+                            label: "No",
+                            className: "btn-default",
+                            callback: function() {
+                                bootbox.hideAll();
+                            }
+                        },
+                        yes: {
+                            label: "Yes",
+                            className: "btn-danger",
+                            callback: function() {
+                                $.ajax({
+                                        url: "/api/posts/" + link.attr("data-post-id"),
+                                        method: "DELETE"
+                                    })
+                                    .done(function() {
+                                        link.parent("div").parent().fadeOut(function() {
+                                            $(this).remove();
+                                        });
+                                    })
+                                    .fail(function() {
+                                        alert("Fail");
+                                    });
+                            }
+                        }
+                    }
+                });
+
+            });
+        });
+    </script>
+
+}

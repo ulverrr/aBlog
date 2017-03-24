@@ -1,0 +1,73 @@
+﻿@model aBlog.Core.ViewModels.PostsViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container">
+
+    <div class="posts">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+            <h1 class="page-header">
+                @Model.Heading
+            </h1>
+            @foreach (var post in Model.Posts)
+            {
+                <!-- First Blog Post -->
+                <h2>
+                    @post.Category.Name &rarr; @Html.ActionLink(post.Title, "Detail", "Home", new { id = post.Id }, null)
+                </h2>
+
+                <div class="date pull-right">
+                    <div class="month">@post.PostedDateTime.ToString("MMM")</div>
+                    <div class="day">@post.PostedDateTime.ToString("d ")</div>
+                </div>
+                <p class="lead">
+                    by @post.User.Name
+                </p>
+
+
+
+                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+
+                <p>@post.Description</p>
+
+                <a class="btn btn-primary" href="@Url.Action("Detail", "Home", new {id = post.Id})">Read More<span class="glyphicon glyphicon-chevron-right"></span></a>
+                if (Model.ShowActions)
+                {
+                    <button data-post-id="@post.Id"
+                            class="btn @(Model.Favorites.Contains(post.Id) ? "btn-info" : "btn-default")
+                            pull-right js-toggle-favorite">
+                        <span class="glyphicon @(Model.Favorites.Contains(post.Id) ? "glyphicon-star" : "glyphicon-star-empty")" aria-hidden="true"></span>
+                    </button>
+                }
+                <hr>
+            }
+
+        </div>
+
+        <!-- Blog Sidebar Widgets Column -->
+        <div class="col-md-4">
+
+            <!-- Blog Search Well -->
+            @Html.Partial("_Search")
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            FavoriteController.init(".posts");
+
+        })
+    </script>
+
+}

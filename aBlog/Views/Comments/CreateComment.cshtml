@@ -1,0 +1,23 @@
+﻿@model aBlog.Core.ViewModels.PostCommentViewModel
+
+@if (User.Identity.IsAuthenticated)
+{
+    <!-- Comments Form -->
+    using (Html.BeginForm("Create", "Comments"))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(p => p.Id)
+        @Html.HiddenFor(u => u.UserName)
+        <div class="well">
+            <h4>Leave a Comment:</h4>
+            <form role="form">
+                <div class="form-group">
+                    @Html.TextAreaFor(c => c.Content, new { @class = "form-control comment-form", row = "3" })
+                </div>
+                <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+        </div>
+    }
+    <hr>
+}
+@Html.Partial("_ListComments", Model.Comment)
